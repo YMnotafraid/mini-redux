@@ -1,4 +1,4 @@
-import { createStore, combineReducers } from "./src/mini-redux/index";
+import { createStore, combineReducers, compose } from "./src/mini-redux/index";
 import { dispatchEnhancer, subscribeEnhancer } from "./src/example/enhancer";
 const initState = {
   value: 1,
@@ -25,7 +25,8 @@ const nameReducer = (state = { name: "lym" }, action) => {
 };
 
 const reducer = combineReducers({ counterReducer, nameReducer });
-const store = createStore(reducer, subscribeEnhancer);
+const enhancer = compose(subscribeEnhancer, dispatchEnhancer);
+const store = createStore(reducer, undefined, enhancer);
 
 const render = () => {
   document.querySelector(".counter").innerHTML =
