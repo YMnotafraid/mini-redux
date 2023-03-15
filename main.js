@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from "./src/mini-redux/index";
-
+import { dispatchEnhancer, subscribeEnhancer } from "./src/example/enhancer";
 const initState = {
   value: 1,
 };
@@ -24,9 +24,10 @@ const nameReducer = (state = { name: "lym" }, action) => {
   }
 };
 
-const store = createStore(combineReducers({ counterReducer, nameReducer }));
+const reducer = combineReducers({ counterReducer, nameReducer });
+const store = createStore(reducer, subscribeEnhancer);
+
 const render = () => {
-  // console.log(store.getState());
   document.querySelector(".counter").innerHTML =
     store.getState().counterReducer.value;
   document.querySelector(".name").innerHTML = store.getState().nameReducer.name;
