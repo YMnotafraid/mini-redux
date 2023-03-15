@@ -6,6 +6,7 @@ import {
 } from "./src/mini-redux/index";
 import { dispatchEnhancer, subscribeEnhancer } from "./src/example/enhancer";
 import { print1, print2, print3 } from "./src/example/middleware";
+import thunk from "./src/example/thunk";
 const initState = {
   value: 1,
 };
@@ -35,8 +36,16 @@ const enhancer = compose(subscribeEnhancer, dispatchEnhancer);
 const store = createStore(
   reducer,
   undefined,
-  compose(enhancer, applyMiddleware(print1, print2, print3))
+  compose(enhancer, applyMiddleware(print1, print2, print3, thunk))
 );
+
+const myasyncfn = async (distatch, getState) => {
+  await setTimeout(() => {
+    console.log(getState());
+  }, 2000);
+};
+
+store.dispatch(myasyncfn);
 
 const render = () => {
   document.querySelector(".counter").innerHTML =
