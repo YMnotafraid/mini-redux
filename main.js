@@ -1,4 +1,4 @@
-import { legacy_createStore } from "redux";
+import createStore from "./src/mini-redux/createStore";
 
 const initState = {
   value: 1,
@@ -14,8 +14,8 @@ const reducer = (state = initState, action) => {
   }
 };
 
-const store = legacy_createStore(reducer);
-
+const store = createStore(reducer);
+console.log(store);
 const render = () => {
   document.querySelector(".counter").innerHTML = store.getState().value;
 };
@@ -29,3 +29,5 @@ document.querySelector(".add").addEventListener("click", () => {
 document.querySelector(".sub").addEventListener("click", () => {
   store.dispatch({ type: "counter/sub" });
 });
+
+render();
