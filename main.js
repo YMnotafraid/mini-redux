@@ -1,5 +1,11 @@
-import { createStore, combineReducers, compose } from "./src/mini-redux/index";
+import {
+  createStore,
+  combineReducers,
+  compose,
+  applyMiddleware,
+} from "./src/mini-redux/index";
 import { dispatchEnhancer, subscribeEnhancer } from "./src/example/enhancer";
+import { print1, print2, print3 } from "./src/example/middleware";
 const initState = {
   value: 1,
 };
@@ -26,7 +32,11 @@ const nameReducer = (state = { name: "lym" }, action) => {
 
 const reducer = combineReducers({ counterReducer, nameReducer });
 const enhancer = compose(subscribeEnhancer, dispatchEnhancer);
-const store = createStore(reducer, undefined, enhancer);
+const store = createStore(
+  reducer,
+  undefined,
+  compose(enhancer, applyMiddleware(print1, print2, print3))
+);
 
 const render = () => {
   document.querySelector(".counter").innerHTML =
