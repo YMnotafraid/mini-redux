@@ -1,9 +1,9 @@
-import createStore from "./src/mini-redux/createStore";
+import { createStore, combineReducers } from "./src/mini-redux/index";
 
 const initState = {
   value: 1,
 };
-const reducer = (state = initState, action) => {
+const counterReducer = (state = initState, action) => {
   switch (action.type) {
     case "counter/add":
       return { ...state, value: state.value + 1 };
@@ -13,11 +13,23 @@ const reducer = (state = initState, action) => {
       return state;
   }
 };
+const nameReducer = (state = { name: "lym" }, action) => {
+  switch (action.type) {
+    case "name/add":
+      return { ...state, name: "luoyuming" };
+    case "name/sub":
+      return { ...state, name: "m" };
+    default:
+      return state;
+  }
+};
 
-const store = createStore(reducer);
-console.log(store);
+const store = createStore(combineReducers({ counterReducer, nameReducer }));
 const render = () => {
-  document.querySelector(".counter").innerHTML = store.getState().value;
+  // console.log(store.getState());
+  document.querySelector(".counter").innerHTML =
+    store.getState().counterReducer.value;
+  document.querySelector(".name").innerHTML = store.getState().nameReducer.name;
 };
 
 store.subscribe(render);
@@ -28,6 +40,14 @@ document.querySelector(".add").addEventListener("click", () => {
 
 document.querySelector(".sub").addEventListener("click", () => {
   store.dispatch({ type: "counter/sub" });
+});
+
+document.querySelector(".long").addEventListener("click", () => {
+  store.dispatch({ type: "name/add" });
+});
+
+document.querySelector(".short").addEventListener("click", () => {
+  store.dispatch({ type: "name/sub" });
 });
 
 render();
